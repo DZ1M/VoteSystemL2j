@@ -1,0 +1,51 @@
+﻿@model IEnumerable<VoteSystemL2j.Models.VoteSystemTops>
+@{ var nomeServidor = new AppConfigurationManager().NomeServidor();}
+<div class="row m-5">
+    <div class="col-12">
+        <div class="card text-center">
+            <div class="card-header">
+                Vote System - @nomeServidor
+            </div>
+            @if (TempData["Mensagem"] != null)
+            {
+                <div class="alert alert-info" role="alert">
+                    @TempData["Mensagem"]
+                </div>
+            }
+            else
+            {
+                <div class="card-body">
+                    <button id="iniciar" class="btn btn-primary">Start Vote</button>
+                    <div class="row">
+                        @{ int id = 0; int last = Model.Count(); }
+                        @foreach (var item in Model)
+                        {
+                            id++;
+                            <div class="col-2">
+                                <a href="@item.LinkVotacao" id="vote-@id" target="_blank" onClick="clickou(@id, @last)" style="display:none;"><img src="@item.LinkImagem" title="@item.Nome" /></a>
+                            </div>
+                        }
+                    </div>
+                    <div id="last" style="display:none;">
+                        <h5 class="card-title">Selecione o personagem que vai receber o reward.</h5>
+                        <div class="form-group">
+                            <select id="char" class="form-control">
+                                @foreach (var player in ViewBag.Characters)
+                                {
+                                    <option value="@player.CharId">@player.CharName</option>
+                                }
+                            </select>
+                        </div>
+                        <button class="btn btn-primary validar">Verificar e Receber</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="row justify-content-md-center">
+    <a href="@Url.Action("Sair","Home")" class="btn btn-danger"><i class="fa fa-sign-out"></i><span> Sair </span></a>
+</div>
+@section scripts {
+    <script type="text/javascript" src="~/vote/validar.js?1"></script>
+}

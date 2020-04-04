@@ -10,7 +10,7 @@ namespace VoteSystemL2j.Models
     public class L2jBrasilTop
     {
         [JsonProperty(PropertyName = "vote")]
-        public ResultMMO Data { get; set; }
+        public ResultL2jBrasil Data { get; set; }
     }
 
     public class MMOTop
