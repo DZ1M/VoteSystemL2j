@@ -24,11 +24,8 @@ namespace VoteSystemL2j.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            // Verifica se usuario ja esta logado
-            var logado = User.Identity.GetUserId();
-
-            // Se estiver, manda direto pro Vote
-            if (String.IsNullOrEmpty(logado))
+            // Verifica se usuario ja esta logado, se estiver manda direto pro Vote
+            if (!String.IsNullOrEmpty(User.Identity.GetUserId()))
                 return RedirectToAction("Index", "Vote");
 
             return View();
@@ -44,13 +41,14 @@ namespace VoteSystemL2j.Controllers
                 throw new Exception("Informe os campos corretamente!");
 
             var obj = new ConsultaService().BuscaPorLoginSenha(usuario.Login, usuario.Password.CryptografaSenha());
-            if (obj == null)
+            if (obj == default(Accounts))
             {
                 TempData["Error"] = "Login ou senha invalidos!";
                 return View();
             }
-
-            if (!String.IsNullOrEmpty(obj.Login))
+           
+            // Mais uma validacao, apenas para confirmar
+            if (!String.IsNullOrEmpty(obj.Login) && !String.IsNullOrEmpty(obj.Password))
             {
                 var claims = new List<Claim>
                 {
@@ -71,9 +69,11 @@ namespace VoteSystemL2j.Controllers
 
                 // Gera o Cookie de authenticacao
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
+                return RedirectToAction("Index", "Vote");
             }
 
-            return RedirectToAction("Index", "Vote");
+            return View();
         }
 
         public IActionResult Sair()

@@ -33,5 +33,9 @@ namespace VoteSystemL2j
         {
             return ConfigurationManager.AppSettings["senha"];
         }
+        public string NomeServidor()
+        {
+            return ConfigurationManager.AppSettings["nomeServidor"];
+        }
     }
 }
