@@ -53,9 +53,9 @@ namespace VoteSystemL2j
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseCookiePolicy();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

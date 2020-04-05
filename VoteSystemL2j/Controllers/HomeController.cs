@@ -35,10 +35,16 @@ namespace VoteSystemL2j.Controllers
         public async Task<IActionResult> Login(Accounts usuario)
         {
             if (usuario == default(Accounts))
-                throw new Exception("Informe os campos corretamente!");
+            {
+                TempData["Error"] = "Informe os campos corretamente!";
+                return View();
+            }
 
             if (String.IsNullOrWhiteSpace(usuario.Login) || String.IsNullOrWhiteSpace(usuario.Password))
-                throw new Exception("Informe os campos corretamente!");
+            {
+                TempData["Error"] = "Informe os campos corretamente!";
+                return View();
+            }
 
             var obj = new ConsultaService().BuscaPorLoginSenha(usuario.Login, usuario.Password.CryptografaSenha());
             if (obj == default(Accounts))
@@ -46,14 +52,16 @@ namespace VoteSystemL2j.Controllers
                 TempData["Error"] = "Login ou senha invalidos!";
                 return View();
             }
-           
             // Mais uma validacao, apenas para confirmar
             if (!String.IsNullOrEmpty(obj.Login) && !String.IsNullOrEmpty(obj.Password))
             {
+                string ipUsuario = _accessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                System.IO.File.AppendAllText("logVoteSystem.txt", "Login: " + obj.Login + " ip: " + ipUsuario + " -> Logou no vote system\n");
+
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, obj.Login),
-                    new Claim("IpUsuario", _accessor.HttpContext.Connection.RemoteIpAddress.ToString()),
+                    new Claim("IpUsuario", ipUsuario),
                     new Claim(ClaimTypes.NameIdentifier, obj.Login.ToString()),
                     new Claim(ClaimTypes.Role, "Usuario"),
                 };

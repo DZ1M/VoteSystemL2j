@@ -32,8 +32,9 @@ namespace VoteSystemL2j.Services
 
         public bool VerificaSeJaVotou(string login, string ip)
         {
-            var ctx = new L2Context();
-            return ctx.VoteSystemVotos.Where(x => (x.Login == login && x.Data == DateTime.Today || x.Ip == ip && x.Data == DateTime.Today)).AsNoTracking().Any();
+            var ctx = new L2Context(); //
+            return ctx.VoteSystemVotos.Where(x => (x.Login == login && x.Data.Day == DateTime.Today.Day && x.Data.Month == DateTime.Today.Month && x.Data.Year == DateTime.Today.Year
+            || x.Ip == ip && x.Data.Day == DateTime.Today.Day && x.Data.Month == DateTime.Today.Month && x.Data.Year == DateTime.Today.Year)).AsNoTracking().Any();
         }
 
         public List<VoteSystemTops> BuscaTops()
@@ -61,6 +62,7 @@ namespace VoteSystemL2j.Services
                 throw new Exception("Você já recebeu seu reward hoje!");
 
             var ctx = new L2Context();
+            var novoIdItem = GeraNovoIdObjeto();
             // Busca e insere Rewards
             foreach (var obj in BuscaRewards())
             {
@@ -72,10 +74,11 @@ namespace VoteSystemL2j.Services
                     EnchantLevel = obj.EnchantLevel,
                     Loc = "WAREHOUSE",
                     OwnerId = charId,
-                    ObjectId = GeraNovoIdObjeto(),
+                    ObjectId = novoIdItem,
                     LocData = 0,
                     Time = -1
                 };
+                novoIdItem++;
                 // Insere objeto
                 ctx.Items.Add(item);
             }

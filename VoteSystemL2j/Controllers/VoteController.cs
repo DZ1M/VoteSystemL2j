@@ -10,6 +10,7 @@ namespace VoteSystemL2j.Controllers
     [Authorize(Roles = "Usuario")]
     public class VoteController : Controller
     {
+        [HttpGet]
         public IActionResult Index()
         {
             string ip = User.Identity.GetIpUsuario();
@@ -51,20 +52,24 @@ namespace VoteSystemL2j.Controllers
                 return Json("Ocorreu um erro, tente novamente!");
 
             // Verifica se ja nao votou e recebeu hoje
-            if(new ConsultaService().VerificaSeJaVotou(login, ip))
+            if (new ConsultaService().VerificaSeJaVotou(login, ip))
                 return Json("Você já votou hoje!!!");
 
             if (!String.IsNullOrEmpty(new AppConfigurationManager().TopL2jBrasil()))
             {
                 var json = new VoteSystemService().VerificarL2jBrasil(ip);
-                if(json.Data.ip != ip)
+                if (json.date == "0")
+                    return Json("Você ainda não votou em todos os links!!!");
+
+                var dat = Convert.ToDateTime(json.date);
+                if (json.ip != ip || dat.Day != DateTime.Today.Year && dat.Month != DateTime.Today.Month && dat.Year != DateTime.Today.Year)
                     return Json("Você ainda não votou em todos os links!!!");
             }
 
             // Verifica se votou no mmotop, caso tiver algo na string
             if (!String.IsNullOrEmpty(new AppConfigurationManager().TopMMo()))
             {
-                var json = new VoteSystemService().VerificarTopMMo(ip);     
+                var json = new VoteSystemService().VerificarTopMMo(ip);
                 if (!json.Data.is_voted)
                     return Json("Você ainda nao votou em todos os links!!!");
             }

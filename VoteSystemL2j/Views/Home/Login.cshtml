@@ -27,12 +27,6 @@
 </style>
 
 <div class="login-form">
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-warning" role="alert">
-            @TempData["Error"].ToString()
-        </div>
-    }
     <form action="@Url.Action("Login","Home")" method="post">
         <h2 class="text-center">Vote System</h2>
         <div class="form-group">
@@ -45,4 +39,10 @@
             <button type="submit" class="btn btn-primary btn-block">Acessar</button>
         </div>
     </form>
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-warning" role="alert">
+            @TempData["Error"].ToString()
+        </div>
+    }
 </div>

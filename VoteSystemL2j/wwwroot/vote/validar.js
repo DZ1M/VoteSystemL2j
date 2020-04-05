@@ -20,9 +20,11 @@
 });
 
 function clickou(value, last) {
-    if (value !== last) {
-        $("#vote-" + value + 1).show();
-        console.log($("#vote-" + value + 1));
+    let newValue = parseInt(value) + 1;
+    console.log('valor ' + value + ' last: ' + last + 'newValue: ' + newValue);
+    if (parseInt(value) !== parseInt(last)) {
+        $("#vote-" + newValue).show();
+        console.log($("#vote-" + newValue));
     }
     else {
         $("#last").show();
