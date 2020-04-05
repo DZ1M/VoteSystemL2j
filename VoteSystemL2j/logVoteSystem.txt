@@ -1,9 +1,0 @@
-::1 -> Ip Usuaro Logado
-::1 -> Ip Usuaro Logado 2
-Login: rgkt ip: ::1 -> Logou no vote system
-Login: rgkt ip: ::1 -> Logou no vote system
-Login: rgkt ip: ::1 -> Logou no vote system
-Login: teste ip: ::1 -> Logou no vote system
-Login: rgkt ip: ::1 -> Logou no vote system
-Login: rgkt ip: ::1 -> Logou no vote system
-Login: rgkt2 ip: ::1 -> Logou no vote system
