@@ -59,7 +59,7 @@ namespace VoteSystemL2j.Services
                 // Busca total votos player
                 var totalVotos = TotalVotosLogin(login);
                 // Pega reward conforme configurado o minimo e maximo
-                return ctx.VoteSystemRewards.Where(x => x.De >= totalVotos && x.Ate <= totalVotos).AsNoTracking().ToList();
+                return ctx.VoteSystemRewards.Where(x => x.De >= totalVotos && x.Ate < totalVotos).AsNoTracking().ToList();
             }
             return ctx.VoteSystemRewards.AsNoTracking().ToList();
         }
