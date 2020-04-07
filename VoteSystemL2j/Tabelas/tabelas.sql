@@ -19,5 +19,7 @@ create table votesystem_rewards(
 	item_id int NOT NULL,
 	quantidade int NOT NULL,
 	enchant_level int NOT NULL DEFAULT 0,
+	votos_por_login_de int NOT NULL DEFAULT 0,
+	votos_por_login_ate int NOT NULL DEFAULT 0,
 	PRIMARY KEY (id)
 );

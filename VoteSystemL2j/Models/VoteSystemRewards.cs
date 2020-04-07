@@ -16,5 +16,9 @@ namespace VoteSystemL2j.Models
         public int Count { get; set; }
         [Column("enchant_level")]
         public int EnchantLevel { get; set; }
+        [Column("votos_por_login_de")]
+        public int De { get; set; }
+        [Column("votos_por_login_ate")]
+        public int Ate { get; set; }
     }
 }

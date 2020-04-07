@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace VoteSystemL2j
 {
@@ -36,6 +37,10 @@ namespace VoteSystemL2j
         public string NomeServidor()
         {
             return ConfigurationManager.AppSettings["nomeServidor"];
+        }
+        public bool RewardsPorQuantidadeVotos()
+        {
+            return Convert.ToBoolean(ConfigurationManager.AppSettings["rewardsPorQuantidadeVotos"]);
         }
     }
 }

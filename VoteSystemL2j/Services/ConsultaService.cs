@@ -50,10 +50,23 @@ namespace VoteSystemL2j.Services
             var ctx = new L2Context();
             return 1000 + ctx.Items.OrderByDescending(x => x.ObjectId).Take(1).AsNoTracking().FirstOrDefault().ObjectId;
         }
-        public List<VoteSystemRewards> BuscaRewards()
+        public List<VoteSystemRewards> BuscaRewards(string login)
         {
             var ctx = new L2Context();
+            //Usa reward por quantidade voto ?
+            if (new AppConfigurationManager().RewardsPorQuantidadeVotos())
+            {
+                // Busca total votos player
+                var totalVotos = TotalVotosLogin(login);
+                // Pega reward conforme configurado o minimo e maximo
+                return ctx.VoteSystemRewards.Where(x => x.De >= totalVotos && x.Ate <= totalVotos).AsNoTracking().ToList();
+            }
             return ctx.VoteSystemRewards.AsNoTracking().ToList();
+        }
+        public int TotalVotosLogin(string login)
+        {
+            var ctx = new L2Context();
+            return ctx.VoteSystemVotos.Where(x => x.Login.Equals(login)).Count();
         }
         public void EntregaItems(string login, string ip, int charId)
         {
@@ -64,7 +77,7 @@ namespace VoteSystemL2j.Services
             var ctx = new L2Context();
             var novoIdItem = GeraNovoIdObjeto();
             // Busca e insere Rewards
-            foreach (var obj in BuscaRewards())
+            foreach (var obj in BuscaRewards(login))
             {
                 // Entrega os items
                 var item = new Items()
